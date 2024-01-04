@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('property_id');
+            $table->decimal('transaction_amount', 10, 2);
+            $table->date('start_date')->nullable();  
+            $table->date('end_date')->nullable();  
             $table->timestamps();
         });
     }

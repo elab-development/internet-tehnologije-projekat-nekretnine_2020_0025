@@ -13,6 +13,8 @@ class Property extends Model
         'description',
         'price',
         'property_type_id',  
+        'bedrooms',
+        
     ];
 
     public function user()

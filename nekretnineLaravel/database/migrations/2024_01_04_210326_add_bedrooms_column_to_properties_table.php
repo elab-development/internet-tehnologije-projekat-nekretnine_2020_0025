@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('property_images', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('property_id');
-            $table->foreign('property_id')->references('id')->on('properties');
-            $table->string('url');
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('properties', function (Blueprint $table) {
+            $table->integer('bedrooms')->after('desc')->nullable(); // Dodaj novu kolonu bedrooms
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_images');
+        Schema::table('properties', function (Blueprint $table) {
+            $table->dropColumn('bedrooms');
+        });
     }
 };

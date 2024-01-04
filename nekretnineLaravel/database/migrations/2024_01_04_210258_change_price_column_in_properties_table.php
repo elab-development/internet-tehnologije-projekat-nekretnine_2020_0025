@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('property_types', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('properties', function (Blueprint $table) {
+            $table->decimal('price', 12, 2)->change();
         });
     }
 
@@ -26,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_types');
+        Schema::table('properties', function (Blueprint $table) {
+            $table->decimal('price', 10, 2)->change();
+        });
     }
 };

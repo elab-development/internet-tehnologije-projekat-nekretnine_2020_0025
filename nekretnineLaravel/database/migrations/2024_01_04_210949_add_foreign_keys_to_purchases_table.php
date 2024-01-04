@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('property_images', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('property_id');
+        Schema::table('purchases', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('property_id')->references('id')->on('properties');
-            $table->string('url');
-            $table->text('description')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_images');
+        Schema::table('purchases', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['property_id']);
+        });
     }
 };
