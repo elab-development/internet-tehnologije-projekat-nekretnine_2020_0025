@@ -14,7 +14,7 @@ class Property extends Model
         'price',
         'property_type_id',  
         'bedrooms',
-        
+
     ];
 
     public function user()
@@ -35,5 +35,9 @@ class Property extends Model
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class);
     }
 }
