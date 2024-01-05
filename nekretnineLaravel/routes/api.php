@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::put('/properties/{id}',[PropertyController::class,'update']);
 
 
 Route::resource('/purchase',PurchaseController::class);
+Route::resource('/rating',RatingController::class);
