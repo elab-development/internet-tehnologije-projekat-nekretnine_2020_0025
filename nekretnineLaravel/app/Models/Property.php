@@ -13,14 +13,9 @@ class Property extends Model
         'description',
         'price',
         'property_type_id',  
-        'bedrooms',
+        'bedrooms',        
 
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function propertyType()
     {

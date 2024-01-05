@@ -20,6 +20,9 @@ return new class extends Migration
             $table->integer('rating_value');  
             $table->text('description')->nullable();  
             $table->date('rating_date');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('property_id')->references('id')->on('properties');
+
             $table->timestamps();
         });
     }
