@@ -44,12 +44,22 @@ class PropertyController extends Controller
             'price' => 'required|numeric',
             'property_type_id' => 'required|exists:property_types,id',
             'bedrooms' => 'required|integer',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
-        }
-        $property = Property::create($request->all());
+        } 
+      $property = Property::create($request->except('images'));
+
+      foreach ($request->file('images') as $image) {
+        $path = $image->store('property_images');  //property_images/dsdadsa.jpg
+        $property->images()->create([
+            'url' => $path,
+            'description' => 'slika '.$path,
+        ]);
+
+      }
 
         return response()->json([
             'message' => 'Nekretnina je uspešno kreirana.',
