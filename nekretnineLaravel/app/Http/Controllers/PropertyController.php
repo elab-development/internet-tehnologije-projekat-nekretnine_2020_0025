@@ -17,7 +17,7 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        return PropertyResource::collection(Property::all());
+        return PropertyResource::collection(Property::paginate(5));
     }
 
     /**
@@ -143,4 +143,46 @@ class PropertyController extends Controller
         $property->delete();
         return response()->json(['message' => 'Nekretnina je uspešno obrisana.'], 200);
     }
+ 
+
+    public function search(Request $request)
+    {
+        
+        $validator = Validator::make($request->all(), [
+            'description' => 'nullable|string',
+            'title' => 'nullable|string',
+            'property_type_id' => 'nullable|exists:property_types,id',
+            'bedrooms' => 'nullable|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+    
+        $query = Property::query();
+
+        
+        if ($request->has('description')) {
+            $query->where('description', 'like', '%' . $request->input('description') . '%');
+        }
+
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->input('title') . '%');
+        }
+
+        if ($request->has('property_type_id')) {
+            $query->where('property_type_id', $request->input('property_type_id'));
+        }
+
+        if ($request->has('bedrooms')) {
+            $query->where('bedrooms', $request->input('bedrooms'));
+        }
+
+        
+        $properties = $query->get();
+
+        return PropertyResource::collection($properties);
+    }
+
 }
