@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,6 @@ Route::get('/properties/{id}',[PropertyController::class,'show']);
 Route::delete('/properties/{id}',[PropertyController::class,'destroy']);
 Route::post('/properties',[PropertyController::class,'store']);
 Route::put('/properties/{id}',[PropertyController::class,'update']);
+
+
+Route::resource('/purchase',PurchaseController::class);
