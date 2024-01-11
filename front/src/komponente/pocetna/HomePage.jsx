@@ -4,7 +4,7 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 
 const HomePage = () => {
-  const [randomImages, setRandomImages] = useState([]);
+  const [randomImages, setRandomImages] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
 
    

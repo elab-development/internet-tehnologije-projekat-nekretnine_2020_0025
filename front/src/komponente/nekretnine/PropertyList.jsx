@@ -5,10 +5,11 @@ import PropertyCard from './PropertyCard';
 import ReactPaginate from 'react-paginate';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import useNekretnine from '../customHooks/useNekretnine';
 
 const PropertyList = () => {
-  const [properties, setProperties] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+    const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -17,19 +18,7 @@ const PropertyList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const propertiesPerPage = 3;
 
-  useEffect(() => {
-    axios
-      .get('http://127.0.0.1:8000/api/properties')
-      .then((response) => {
-        setProperties(response.data.data);
-        setFilteredProperties(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching properties:', error);
-        setIsLoading(false);
-      });
-  }, []);
+  
 
   useEffect(() => {
     // Funkcija za filtriranje po ceni
@@ -59,6 +48,8 @@ const PropertyList = () => {
     } else {
       setFilteredProperties(filteredBySearch);
     }
+
+    /////
   };
 
   const filterBySearchTerm = (value) => {
