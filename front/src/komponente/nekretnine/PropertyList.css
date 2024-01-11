@@ -33,4 +33,30 @@
     max-width: 100%;
     height: auto;
   }
+   
+.search-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-container input {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .search-container button {
+    padding: 8px 12px;
+    background-color: #2892D7; 
+    color: #fff; 
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  
+  .search-container button:hover {
+    background-color: #1D70A2;  
+  }
   
