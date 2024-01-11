@@ -40,7 +40,7 @@
     align-items: center;
   }
   
-  .search-container input {
+   input {
     flex-grow: 1;
     padding: 8px;
     font-size: 16px;
@@ -60,9 +60,36 @@
     background-color: #1D70A2;  
   }
   
-  ul{
+  ul.pagination {
     list-style: none;
+    display: flex; 
+    justify-content: center;  
+    align-items: center;  
+    margin: 0;
+    padding: 0;
   }
-  ul >li :hover{
+  
+  ul.pagination > li {
+    padding: 15px;
+  }
+  
+  ul.pagination > li:hover {
     cursor: pointer;
+    background-color: #173753;
+    color: #E0E0E0;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+  }
+  select option {
+    background-color: #fff;
+    color: #333;
   }
