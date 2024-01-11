@@ -9,9 +9,11 @@ const PropertyList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const propertiesPerPage = 3;  
+  const propertiesPerPage = 3;
 
   useEffect(() => {
     axios
@@ -27,25 +29,44 @@ const PropertyList = () => {
       });
   }, []);
 
+  useEffect(() => {
+    // Funkcija za filtriranje po ceni
+    const filterByPrice = () => {
+      const filteredByPrice = properties.filter((property) =>
+        (minPrice === '' || parseInt(property.price) >= parseInt(minPrice)) &&
+        (maxPrice === '' || parseInt(property.price) <= parseInt(maxPrice))
+      );
+      applyFilters(filteredByPrice);
+    };
+
+    filterByPrice();
+  }, [minPrice, maxPrice, properties]);
+
+  const applyFilters = (filteredData) => {
+    // Funkcija za primenu svih filtera
+    const filteredBySearch = filteredData.filter((property) =>
+      property.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      property.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (selectedPropertyType) {
+      const filteredByType = filteredBySearch.filter(
+        (property) => property.propery_type.name === selectedPropertyType
+      );
+      setFilteredProperties(filteredByType);
+    } else {
+      setFilteredProperties(filteredBySearch);
+    }
+  };
+
   const filterBySearchTerm = (value) => {
     setSearchTerm(value);
-    const filteredProperties = properties.filter((property) =>
-      property.description.toLowerCase().includes(value.toLowerCase()) ||
-      property.title.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredProperties(filteredProperties);
+    applyFilters(properties);
   };
 
   const filterByPropertyType = (type) => {
     setSelectedPropertyType(type);
-    if (type === '') {
-      setFilteredProperties(properties);
-    } else {
-      const filteredByType = properties.filter(
-        (property) => property.propery_type.name === type
-      );
-      setFilteredProperties(filteredByType);
-    }
+    applyFilters(properties);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -64,7 +85,7 @@ const PropertyList = () => {
           placeholder="Search by description or title"
           value={searchTerm}
           onChange={(e) => filterBySearchTerm(e.target.value)}
-        />  
+        />
         <select
           value={selectedPropertyType}
           onChange={(e) => filterByPropertyType(e.target.value)}
@@ -76,6 +97,18 @@ const PropertyList = () => {
           <option value="Vikendica">Vikendica</option>
           <option value="Poslovni prostor">Poslovni prostor</option>
         </select>
+        <input
+          type="number"
+          placeholder="Min Price"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Max Price"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
       </div>
       {isLoading ? (
         <div>Loading...</div>
