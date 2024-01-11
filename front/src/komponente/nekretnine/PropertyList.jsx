@@ -3,6 +3,7 @@ import axios from 'axios';
 import './PropertyList.css';
 import PropertyCard from './PropertyCard';
 import ReactPaginate from 'react-paginate';
+import Navbar from '../Navbar/Navbar';
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
@@ -78,6 +79,8 @@ const PropertyList = () => {
   const currentProperties = filteredProperties.slice(offset, offset + propertiesPerPage);
 
   return (
+    <>
+    <Navbar></Navbar>
     <div className="property-list">
       <div className="search-container">
         <input
@@ -130,7 +133,7 @@ const PropertyList = () => {
           ))}
         </>
       )}
-    </div>
+    </div> </>
   );
 };
 

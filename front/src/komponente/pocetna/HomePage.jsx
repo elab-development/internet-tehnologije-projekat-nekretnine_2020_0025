@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './HomePage.css';
+import Navbar from '../Navbar/Navbar';
 
 const HomePage = () => {
   const [randomImages, setRandomImages] = useState([]);
@@ -44,6 +45,8 @@ const HomePage = () => {
   //   return <div>Loading...</div>;
   // }
   return (
+    <>
+    <Navbar></Navbar>
     <div className="about">
       <header className="about-header">
         <h1>About Our Real Estate Agency</h1>
@@ -91,7 +94,7 @@ const HomePage = () => {
           ))}
         </div> */}
       </section>
-    </div>
+    </div></>
   );
 };
 
