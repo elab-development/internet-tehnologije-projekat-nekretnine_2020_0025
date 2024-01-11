@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './ContactForm.css';
 import TextInput from './TextInput'; // Importujemo TextInput komponentu
+import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
-const ContactForm = () => {
+const ContactForm = ({messages,setMessages}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+ 
   const [alert, setAlert] = useState('');
 
   const handleSubmit = (e) => {
@@ -28,6 +30,7 @@ const ContactForm = () => {
   };
 
   return (
+    <><Navbar/>
     <div className="contact-form-container">
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit} className="contact-form">
@@ -61,6 +64,8 @@ const ContactForm = () => {
       </form>
       {alert && <div className="alert">{alert}</div>}
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 
