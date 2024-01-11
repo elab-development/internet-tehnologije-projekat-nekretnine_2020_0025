@@ -6,11 +6,11 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
    
-  const fetchRandomImages = async () => {
-    const accessKey = '_dcS1nPF6IIONuQrJCArcuCg6u2EpN876eg2wHKZTNQ'; 
-    const keywords = ['house', 'apartment', 'architecture', 'interior', 'building']; 
-    const numberOfImages = 10;  
-    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+  // const fetchRandomImages = async () => {
+  //   const accessKey = '_dcS1nPF6IIONuQrJCArcuCg6u2EpN876eg2wHKZTNQ'; 
+  //   const keywords = ['house', 'apartment', 'architecture', 'interior', 'building']; 
+  //   const numberOfImages = 10;  
+  //   const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
   //   try {
       
   //     const response = await fetch(
@@ -34,15 +34,15 @@ const HomePage = () => {
   //     console.error('Error:', error);
   //     setIsLoading(false);
   //   }
-  };
+  // };
 
-  useEffect(() => {
-    fetchRandomImages();
-  }, []);
+  // useEffect(() => {
+  //   fetchRandomImages();
+  // }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
   return (
     <div className="about">
       <header className="about-header">

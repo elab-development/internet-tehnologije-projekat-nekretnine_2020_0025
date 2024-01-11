@@ -1,14 +1,22 @@
-import logo from './logo.svg';
+ 
 import './App.css';
 import HomePage from './komponente/pocetna/HomePage'; 
 import PropertyList from './komponente/nekretnine/PropertyList';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
-       <HomePage></HomePage>
-      <PropertyList></PropertyList>
-    </div>
+    <BrowserRouter>
+      
+      <Routes>
+     
+        <Route path="/" element={<HomePage />} />
+
+       
+        <Route path="/property-list" element={<PropertyList />} />
+      </Routes>
+    </BrowserRouter>
+  </div>
   );
 }
 

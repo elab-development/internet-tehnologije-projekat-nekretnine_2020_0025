@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PropertyList.css';
+import PropertyCard from './PropertyCard';
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
@@ -27,22 +28,8 @@ const PropertyList = () => {
   return (
     <div className="property-list">
       {properties.map((property) => (
-        <div key={property.id} className="property">
-          <h3>{property.title}</h3>
-          <p>Description: {property.description}</p>
-          <p>Price: {property.price}</p>
-          <p>Bedrooms: {property.bedrooms}</p>
-          <p>Property Type: {property.propery_type.name}</p>
-          <div className="images">
-            {property.images.map((image) => (
-              <img
-                key={image.id}
-                src={image.url}
-                alt={`Property Image ${image.id}`}
-              />
-            ))}
-          </div>
-        </div>
+         <PropertyCard key={property.id} property={property}></PropertyCard>
+         
       ))}
     </div>
   );
