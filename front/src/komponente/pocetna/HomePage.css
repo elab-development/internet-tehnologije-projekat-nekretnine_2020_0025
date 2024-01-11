@@ -1,0 +1,47 @@
+.about {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1B4353; /* Charcoal */
+  line-height: 1.6;
+}
+
+.about-header {
+  background-color: #173753; /* Prussian blue */
+  color: #6DAEDB; /* Carolina blue */
+  padding: 40px;
+  text-align: center;
+}
+
+.about-intro, .about-content, .about-values {
+  padding: 40px;
+}
+
+.about-intro {
+  background-color: #2892D7; /* Celestial Blue */
+  color: #1D70A2; /* Bice blue */
+}
+
+.about-content h3 {
+  margin-top: 20px;
+}
+
+.values-list {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.value {
+  background-color: #6DAEDB; /* Carolina blue */
+  padding: 20px;
+  width: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.value h4 {
+  margin: 0 0 10px 0;
+  color: #173753; /* Prussian blue */
+}
+
+.value p {
+  color: #1B4353; /* Charcoal */
+}
