@@ -4,6 +4,7 @@ import './PropertyList.css';
 import PropertyCard from './PropertyCard';
 import ReactPaginate from 'react-paginate';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
@@ -133,7 +134,9 @@ const PropertyList = () => {
           ))}
         </>
       )}
-    </div> </>
+    </div> 
+    <Footer></Footer>
+    </>
   );
 };
 

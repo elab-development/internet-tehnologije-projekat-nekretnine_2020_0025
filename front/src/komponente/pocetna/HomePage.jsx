@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 
 const HomePage = () => {
   const [randomImages, setRandomImages] = useState([]);
@@ -94,7 +95,9 @@ const HomePage = () => {
           ))}
         </div> */}
       </section>
-    </div></>
+    </div>
+    <Footer></Footer>
+    </>
   );
 };
 
