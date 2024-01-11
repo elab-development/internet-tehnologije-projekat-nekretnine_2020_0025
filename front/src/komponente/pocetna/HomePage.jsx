@@ -11,29 +11,29 @@ const HomePage = () => {
     const keywords = ['house', 'apartment', 'architecture', 'interior', 'building']; 
     const numberOfImages = 10;  
     const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
-    try {
+  //   try {
       
-      const response = await fetch(
-        `https://api.unsplash.com/photos/random?count=${numberOfImages}&query=${randomKeyword}`,
-        {
-          headers: {
-            Authorization: `Client-ID ${accessKey}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setRandomImages(data);
-        setIsLoading(false);
-      } else {
-        console.error('Failed to fetch random images');
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setIsLoading(false);
-    }
+  //     const response = await fetch(
+  //       `https://api.unsplash.com/photos/random?count=${numberOfImages}&query=${randomKeyword}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Client-ID ${accessKey}`,
+  //         },
+  //       }
+  //     );
+      
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setRandomImages(data);
+  //       setIsLoading(false);
+  //     } else {
+  //       console.error('Failed to fetch random images');
+  //       setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     setIsLoading(false);
+  //   }
   };
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const HomePage = () => {
       </section>
       <section className="image-gallery">
         <h2>Random Real Estate Images</h2>
-        <div className="gallery">
+        {/* <div className="gallery">
           {randomImages.map((image) => (
             <img
               key={image.id}
@@ -89,7 +89,7 @@ const HomePage = () => {
               className="gallery-image"
             />
           ))}
-        </div>
+        </div> */}
       </section>
     </div>
   );
