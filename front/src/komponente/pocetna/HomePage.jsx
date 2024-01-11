@@ -1,8 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomePage.css';
- 
 
 const HomePage = () => {
+  const [randomImages, setRandomImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+   
+  const fetchRandomImages = async () => {
+    const accessKey = '_dcS1nPF6IIONuQrJCArcuCg6u2EpN876eg2wHKZTNQ'; 
+    const keywords = ['house', 'apartment', 'architecture', 'interior', 'building']; 
+    const numberOfImages = 10;  
+    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+    try {
+      
+      const response = await fetch(
+        `https://api.unsplash.com/photos/random?count=${numberOfImages}&query=${randomKeyword}`,
+        {
+          headers: {
+            Authorization: `Client-ID ${accessKey}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setRandomImages(data);
+        setIsLoading(false);
+      } else {
+        console.error('Failed to fetch random images');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRandomImages();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="about">
       <header className="about-header">
@@ -36,6 +76,19 @@ const HomePage = () => {
             <h4>Commitment</h4>
             <p>Your satisfaction is our top priority, and we work tirelessly to meet your needs.</p>
           </div>
+        </div>
+      </section>
+      <section className="image-gallery">
+        <h2>Random Real Estate Images</h2>
+        <div className="gallery">
+          {randomImages.map((image) => (
+            <img
+              key={image.id}
+              src={image.urls.regular}
+              alt={image.alt_description}
+              className="gallery-image"
+            />
+          ))}
         </div>
       </section>
     </div>
