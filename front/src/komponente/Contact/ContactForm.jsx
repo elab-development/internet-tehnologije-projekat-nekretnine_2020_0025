@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import './ContactForm.css';
+
+const ContactForm = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [alert, setAlert] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name && email && message) {
+      const newMessage = {
+        name,
+        email,
+        message,
+      };
+      setMessages([...messages, newMessage]);
+      setAlert('Message sent successfully!');
+      setName('');
+      setEmail('');
+      setMessage('');
+    } else {
+      setAlert('Please fill in all fields.');
+    }
+  };
+
+  return (
+    <div className="contact-form-container">
+      <h2>Contact Us</h2>
+      <form onSubmit={handleSubmit} className="contact-form">
+        <div className="input-container">
+          <label>Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="input-container">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="input-container">
+          <label>Message:</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          ></textarea>
+        </div>
+        <button type="submit" className="submit-button">
+          Submit
+        </button>
+      </form>
+      {alert && <div className="alert">{alert}</div>}
+    </div>
+  );
+};
+
+export default ContactForm;
