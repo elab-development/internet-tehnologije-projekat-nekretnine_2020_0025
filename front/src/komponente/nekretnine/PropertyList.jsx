@@ -8,8 +8,8 @@ import Footer from '../Footer/Footer';
 import useNekretnine from '../customHooks/useNekretnine';
 
 const PropertyList = () => {
-    const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
-  
+  const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -18,48 +18,37 @@ const PropertyList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const propertiesPerPage = 3;
 
-  
+  const applyFilters = (search, type, min, max) => {
+    const filtered = properties.filter(property => {
+      return (
+        (search === '' || property.description.toLowerCase().includes(search.toLowerCase()) || property.title.toLowerCase().includes(search.toLowerCase())) &&
+        (type === '' || property.propery_type.name === type) && //slovna greska je ovde bila, iz apija vracamo slucajno propery umesto property type
+        (min === '' || parseInt(property.price) >= parseInt(min)) &&
+        (max === '' || parseInt(property.price) <= parseInt(max))
+      );
+    });
+
+    setFilteredProperties(filtered);
+  };
 
   useEffect(() => {
-    // Funkcija za filtriranje po ceni
-    const filterByPrice = () => {
-      const filteredByPrice = properties.filter((property) =>
-        (minPrice === '' || parseInt(property.price) >= parseInt(minPrice)) &&
-        (maxPrice === '' || parseInt(property.price) <= parseInt(maxPrice))
-      );
-      applyFilters(filteredByPrice);
-    };
+    applyFilters(searchTerm, selectedPropertyType, minPrice, maxPrice);
+  }, [properties, searchTerm, selectedPropertyType, minPrice, maxPrice]);
 
-    filterByPrice();
-  }, [minPrice, maxPrice, properties]);
-
-  const applyFilters = (filteredData) => {
-    // Funkcija za primenu svih filtera
-    const filteredBySearch = filteredData.filter((property) =>
-      property.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    if (selectedPropertyType) {
-      const filteredByType = filteredBySearch.filter(
-        (property) => property.propery_type.name === selectedPropertyType
-      );
-      setFilteredProperties(filteredByType);
-    } else {
-      setFilteredProperties(filteredBySearch);
-    }
-
-    /////
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  const filterBySearchTerm = (value) => {
-    setSearchTerm(value);
-    applyFilters(properties);
+  const handleTypeChange = (e) => {
+    setSelectedPropertyType(e.target.value);
   };
 
-  const filterByPropertyType = (type) => {
-    setSelectedPropertyType(type);
-    applyFilters(properties);
+  const handleMinPriceChange = (e) => {
+    setMinPrice(e.target.value);
+  };
+
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(e.target.value);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -69,64 +58,64 @@ const PropertyList = () => {
   const pageCount = Math.ceil(filteredProperties.length / propertiesPerPage);
   const offset = currentPage * propertiesPerPage;
   const currentProperties = filteredProperties.slice(offset, offset + propertiesPerPage);
-
+ console.log(filteredProperties[0])
   return (
     <>
-    <Navbar></Navbar>
-    <div className="property-list">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search by description or title"
-          value={searchTerm}
-          onChange={(e) => filterBySearchTerm(e.target.value)}
-        />
-        <select
-          value={selectedPropertyType}
-          onChange={(e) => filterByPropertyType(e.target.value)}
-        >
-          <option value="">All Types</option>
-          <option value="Stan">Stan</option>
-          <option value="Kuća">Kuća</option>
-          <option value="Apartman">Apartman</option>
-          <option value="Vikendica">Vikendica</option>
-          <option value="Poslovni prostor">Poslovni prostor</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Min Price"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Max Price"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-        />
-      </div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          <ReactPaginate
-            previousLabel={'Previous'}
-            nextLabel={'Next'}
-            breakLabel={'...'}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageChange}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
+      <Navbar></Navbar>
+      <div className="property-list">
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search by description or title"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
-          {currentProperties.map((property) => (
-            <PropertyCard key={property.id} property={property}></PropertyCard>
-          ))}
-        </>
-      )}
-    </div> 
-    <Footer></Footer>
+          <select
+            value={selectedPropertyType}
+            onChange={handleTypeChange}
+          >
+            <option value="">All Types</option>
+            <option value="Stan">Stan</option>
+            <option value="Kuća">Kuća</option>
+            <option value="Apartman">Apartman</option>
+            <option value="Vikendica">Vikendica</option>
+            <option value="Poslovni prostor">Poslovni prostor</option>
+          </select>
+          <input
+            type="number"
+            placeholder="Min Price"
+            value={minPrice}
+            onChange={handleMinPriceChange}
+          />
+          <input
+            type="number"
+            placeholder="Max Price"
+            value={maxPrice}
+            onChange={handleMaxPriceChange}
+          />
+        </div>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <ReactPaginate
+              previousLabel={'Previous'}
+              nextLabel={'Next'}
+              breakLabel={'...'}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageChange}
+              containerClassName={'pagination'}
+              activeClassName={'active'}
+            />
+            {currentProperties.map((property) => (
+              <PropertyCard key={property.id} property={property}></PropertyCard>
+            ))}
+          </>
+        )}
+      </div> 
+      <Footer></Footer>
     </>
   );
 };
