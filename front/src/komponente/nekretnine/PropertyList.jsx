@@ -60,8 +60,7 @@ const PropertyList = () => {
   const currentProperties = filteredProperties.slice(offset, offset + propertiesPerPage);
  console.log(filteredProperties[0])
   return (
-    <>
-      <Navbar></Navbar>
+    <> 
       <div className="property-list">
         <div className="search-container">
           <input

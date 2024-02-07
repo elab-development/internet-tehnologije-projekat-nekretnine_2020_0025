@@ -11,8 +11,7 @@ const Messages = ({ messages, setMessages }) => {
   };
 
   return (
-    <>
-    <Navbar></Navbar>
+    <> 
     <div className="messages-container">
       <h2>Messages</h2>
       <table className="messages-table">

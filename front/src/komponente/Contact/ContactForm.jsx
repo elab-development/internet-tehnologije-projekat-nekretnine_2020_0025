@@ -30,7 +30,7 @@ const ContactForm = ({messages,setMessages}) => {
   };
 
   return (
-    <><Navbar/>
+    <> 
     <div className="contact-form-container">
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit} className="contact-form">

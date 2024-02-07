@@ -2,29 +2,33 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({setToken}) => {
+const Register = () => {
     let navigate=useNavigate();
-  const [email, setEmail] = useState('kupac1@gmail.com');
-  const [password, setPassword] = useState('password');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
-      localStorage.setItem('token', response.data.token);
-            navigate('/property-list');
-            setToken(response.data.token);
+      const response = await axios.post('http://127.0.0.1:8000/api/register', { name, email, password });
+      console.log(response.data.message);  
+        navigate('/login');
     } catch (error) {
       setError(error.response.data.message);
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
+    <div className="register-container">
+      <h2>Register</h2>
       {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleRegister}>
+        <div>
+          <label>Name:</label>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
         <div>
           <label>Email:</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -33,11 +37,10 @@ const Login = ({setToken}) => {
           <label>Password:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
-  
 };
 
-export default Login;
+export default Register;
