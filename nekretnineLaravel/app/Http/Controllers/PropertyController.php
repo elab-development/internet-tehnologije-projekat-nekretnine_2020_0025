@@ -36,36 +36,40 @@ class PropertyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'property_type_id' => 'required|exists:property_types,id',
-            'bedrooms' => 'required|integer',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        } 
-      $property = Property::create($request->except('images'));
-
-      foreach ($request->file('images') as $image) {
-        $path = $image->store('property_images');  //property_images/dsdadsa.jpg
-        $property->images()->create([
-            'url' => $path,
-            'description' => 'slika '.$path,
-        ]);
-
-      }
-
-        return response()->json([
-            'message' => 'Nekretnina je uspešno kreirana.',
-            'nekretnina'=> new PropertyResource($property)
-         ], 201);
-    }
+     
+     public function store(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'title' => 'required|string',
+             'description' => 'required|string',
+             'price' => 'required|numeric',
+             'property_type_id' => 'required|exists:property_types,id',
+             'bedrooms' => 'required|integer',
+             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+         ]);
+     
+         if ($validator->fails()) {
+             return response()->json(['errors' => $validator->errors()], 400);
+         } 
+     
+         $property = Property::create($request->except('images'));
+     
+         if ($request->hasFile('images')) {
+             foreach ($request->file('images') as $image) {
+                 $path = $image->store('property_images');  //property_images/dsdadsa.jpg
+                 $property->images()->create([
+                     'url' => $path,
+                     'description' => 'slika '.$path,
+                 ]);
+             }
+         }
+     
+         return response()->json([
+             'message' => 'Nekretnina je uspešno kreirana.',
+             'nekretnina'=> new PropertyResource($property)
+          ], 201);
+     }
+     
 
     /**
      * Display the specified resource.

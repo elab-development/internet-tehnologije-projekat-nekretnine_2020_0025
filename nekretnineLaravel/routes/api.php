@@ -7,6 +7,7 @@ use App\Http\Controllers\RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PropertyTypeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,6 +46,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
+Route::get('property-types', [PropertyTypeController::class, 'index']);
  
 
 Route::post('/register',[AuthController::class,'register']);

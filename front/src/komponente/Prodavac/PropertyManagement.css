@@ -53,4 +53,40 @@
     background-color: #ccc;
     cursor: pointer;
   }
+  /* Dodatni CSS za modal */
+.modal {
+    display: block; /* Prikazuje modal */
+    position: fixed; /* Fiksira modalni prozor u odnosu na viewport */
+    z-index: 1; /* Postavlja modal iznad ostalog sadržaja */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Omogućava klizanje kroz sadržaj ako je modal previsok */
+    background-color: rgba(0,0,0,0.4); /* Tamni sloj iza modala */
+  }
+  
+  /* Stilovi za sadržaj modala */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centriranje u odnosu na viewport */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* Stilovi za zatvaranje modalnog prozora */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
   
