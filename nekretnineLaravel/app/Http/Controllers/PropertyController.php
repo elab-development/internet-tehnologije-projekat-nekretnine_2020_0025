@@ -104,25 +104,26 @@ class PropertyController extends Controller
     {
         $property = Property::findOrFail($id);
 
-
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'description' => 'required|string',
-            'price' => 'required|numeric',
-            'property_type_id' => 'required|exists:property_types,id',
+            'price' => 'required|numeric', 
             'bedrooms' => 'required|integer',
         ]);
     
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-
-        $property->update($request->all());
-
+    
+        // Izostavljanje property type-a iz zahteva za ažuriranje
+        $updateData = $request->except('property_type_id');
+    
+        $property->update($updateData);
+    
         return response()->json([
-            'message' => 'Nekretnina je uspešno azurirana.',
-            'nekretnina'=> new PropertyResource($property)
-         ], 200);
+            'message' => 'Nekretnina je uspešno ažurirana.',
+            'nekretnina' => new PropertyResource($property)
+        ], 200);
     }
 
     /**
