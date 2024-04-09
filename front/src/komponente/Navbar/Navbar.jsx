@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';  
 import './Navbar.css';
 
 const Navbar = ({ token, setToken }) => {
+  let navigate=useNavigate();
   const handleLogout = async () => {
     try {
       await axios.post('http://127.0.0.1:8000/api/logout', null, {
@@ -12,6 +13,8 @@ const Navbar = ({ token, setToken }) => {
         }
       });  
       setToken(null);  
+      navigate("/");
+      localStorage.clear();
     } catch (error) {
       console.error('Error logging out:', error);
     }

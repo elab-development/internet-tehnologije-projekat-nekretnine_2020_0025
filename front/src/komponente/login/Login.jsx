@@ -13,8 +13,13 @@ const Login = ({setToken}) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', { email, password });
       localStorage.setItem('token', response.data.token);
-            navigate('/property-list');
-            setToken(response.data.token);
+      setToken(response.data.token);
+      localStorage.setItem('role',response.data.user.role);
+      if(response.data.user.role=="kupac"){
+         navigate('/property-list');
+      }else{
+        navigate('/property-management')
+      } 
     } catch (error) {
       setError(error.response.data.message);
     }

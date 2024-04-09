@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Login from './komponente/login/Login';
 import Navbar from './komponente/Navbar/Navbar';
 import Register from './komponente/login/Register';
+import PropertyManagement from './komponente/Prodavac/PropertyManagement';
 function App() {
   const [messages, setMessages] = useState([]);
   const [token, setToken] = useState(null);
@@ -21,6 +22,10 @@ function App() {
         <Route path="/register" element={<Register  />} />  {/*dodato   */}
    
         <Route path="/login" element={<Login setToken={setToken} />} />  {/*dodato   */}
+        <Route path="/property-management" element={<PropertyManagement />} />{/*dodato   */}
+
+
+
         <Route path="/messages" element={<Messages messages={messages} setMessages={setMessages}/>} />
         <Route path="/contact" element={<ContactForm messages={messages} setMessages={setMessages}/>} />
         <Route path="/property-list" element={<PropertyList />} />

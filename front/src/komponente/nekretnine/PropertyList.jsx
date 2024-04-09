@@ -8,7 +8,7 @@ import Footer from '../Footer/Footer';
 import useNekretnine from '../customHooks/useNekretnine';
 
 const PropertyList = () => {
-  const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
+  const { data: properties, setData: setProperties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
