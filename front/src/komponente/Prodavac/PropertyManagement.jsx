@@ -16,8 +16,8 @@ const PropertyManagement = () => {
     });
     const [selectedProperty, setSelectedProperty] = useState(null);
     const [propertyTypes, setPropertyTypes] = useState([]);
-    const [sortOrder, setSortOrder] = useState('asc'); // State za praćenje redosleda sortiranja
-    const [searchTerm, setSearchTerm] = useState(''); // State za praćenje unosa korisnika za pretragu
+    const [sortOrder, setSortOrder] = useState('asc'); 
+    const [searchTerm, setSearchTerm] = useState(''); 
   
     const token = localStorage.getItem('token');
   
@@ -56,6 +56,10 @@ const PropertyManagement = () => {
       const { name, value } = e.target;
       setNewProperty({ ...newProperty, [name]: value });
     };
+
+    const handleImageChange = (e) => {
+      setNewProperty({ ...newProperty, images: e.target.files });
+    };
   
     const handleAddProperty = async () => {
       try {
@@ -71,8 +75,20 @@ const PropertyManagement = () => {
     };
   
     const addProperty = async (propertyData) => {
-      const response = await axios.post('http://127.0.0.1:8000/api/properties', propertyData, {
+      const formData = new FormData();
+      for (let key in propertyData) {
+        if (key === 'images') {
+          for (let i = 0; i < propertyData.images.length; i++) {
+            formData.append('images[]', propertyData.images[i]);
+          }
+        } else {
+          formData.append(key, propertyData[key]);
+        }
+      }
+
+      const response = await axios.post('http://127.0.0.1:8000/api/properties', formData, {
         headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
         }
       });
@@ -80,22 +96,14 @@ const PropertyManagement = () => {
     };
   
     const updateProperty = async (id, propertyData) => {
-      await axios.put(`http://127.0.0.1:8000/api/properties/${id}`, propertyData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const updatedProperties = properties.map(property =>
-        property.id === id ? { ...property, ...propertyData } : property
-      );
-      setProperties(updatedProperties);
+      // Implement update logic here
     };
   
     const handleEditProperty = (property) => {
       setSelectedProperty(property);
       const editedProperty = {
         ...property,
-        property_type_id: property.property_type_id || '', // Setovanje property type-a ili praznog stringa ako nije postavljen
+        property_type_id: property.property_type_id || '', 
       };
       setNewProperty(editedProperty);
       setShowModal(true);
@@ -179,7 +187,9 @@ const PropertyManagement = () => {
                 <input type="number" name="price" value={newProperty.price} onChange={handleInputChange} />
                 <label>Bedrooms:</label>
                 <input type="number" name="bedrooms" value={newProperty.bedrooms} onChange={handleInputChange} />
-                {!selectedProperty && ( // Renderovanje komboboxa samo ako nije odabrana nekretnina za editovanje
+                <label>Images:</label>
+                <input type="file" name="images" multiple onChange={handleImageChange} />
+                {!selectedProperty && (
                   <div>
                     <label>Property Type:</label>
                     <select name="property_type_id" value={newProperty.property_type_id} onChange={handleInputChange}>
