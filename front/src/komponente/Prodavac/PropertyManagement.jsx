@@ -16,6 +16,8 @@ const PropertyManagement = () => {
     });
     const [selectedProperty, setSelectedProperty] = useState(null);
     const [propertyTypes, setPropertyTypes] = useState([]);
+    const [sortOrder, setSortOrder] = useState('asc'); // State za praćenje redosleda sortiranja
+    const [searchTerm, setSearchTerm] = useState(''); // State za praćenje unosa korisnika za pretragu
   
     const token = localStorage.getItem('token');
   
@@ -99,9 +101,38 @@ const PropertyManagement = () => {
       setShowModal(true);
     };
   
+    const toggleSortOrder = () => {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
+  
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value);
+    };
+  
+    const filteredProperties = properties.filter(property =>
+      property.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    const sortedProperties = filteredProperties.sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.title.localeCompare(b.title);
+      } else {
+        return b.title.localeCompare(a.title);
+      }
+    });
+  
     return (
       <div className="property-container">
         <h2>Properties</h2>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Search by title..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <button onClick={toggleSortOrder}>Sort by Title ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})</button>
+        </div>
         <button onClick={() => setShowModal(true)}>Add New</button>
         {isLoading ? (
           <p>Loading...</p>
@@ -119,7 +150,7 @@ const PropertyManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {properties.map((property) => (
+              {sortedProperties.map((property) => (
                 <tr key={property.id}>
                   <td>{property.title}</td>
                   <td>{property.description}</td>
@@ -139,7 +170,7 @@ const PropertyManagement = () => {
             <div className="modal-content">
               <span className="close" onClick={() => setShowModal(false)}>&times;</span>
               <h2>{selectedProperty ? 'Edit Property' : 'Add New Property'}</h2>
-              <form>
+              <form style={{display:"grid"}}>
                 <label>Title:</label>
                 <input type="text" name="title" value={newProperty.title} onChange={handleInputChange} />
                 <label>Description:</label>
