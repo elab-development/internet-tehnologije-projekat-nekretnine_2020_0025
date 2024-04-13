@@ -15,15 +15,15 @@ class PropertyResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
-    {
-       // Izvršite upit za sve slike koje imaju isti property ID
+    { 
        $images = PropertyImage::where('property_id', $this->id)->get();
 
-       // Kreirajte niz slika za dodavanje u resurs
+       
        $imageUrls = [];
        foreach ($images as $image) {
-           $imageUrls[] = $image->url;
-       }
+        // Ovde koristimo url() pomoćnu funkciju da generišemo URL prema simboličkom linku
+            $imageUrls[] = url("storage/{$image->url}");
+        }
 
        return [
            'id' => $this->id,
@@ -32,7 +32,7 @@ class PropertyResource extends JsonResource
            'price' => $this->price,
            'bedrooms' => $this->bedrooms,
            'propery_type' => PropertyType::find($this->property_type_id),
-           'images' => $imageUrls, // Dodajte niz URL-ova slika umesto polja 'images'
+           'images' => $imageUrls,
        ];
     }
 }

@@ -64,7 +64,7 @@ class PropertyController extends Controller
         // Čuvamo slike u bazi podataka i storage-u
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('property_images'); // Čuvanje slike u storage-u
+                $path = $image->store('property_images', 'public');
                 $propertyImage = new PropertyImage([
                     'url' => $path,
                     'description' => 'Slika nekretnine',  
