@@ -62,18 +62,16 @@ Route::get('/properties/{id}',[PropertyController::class,'show']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', [AuthController::class, 'user']); 
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-
+    Route::post('/logout', [AuthController::class, 'logout']); 
     
     Route::middleware(['checkrole:prodavac'])->group(function () {
         Route::delete('/properties/{id}',[PropertyController::class,'destroy']);
         Route::post('/properties',[PropertyController::class,'store']);
         Route::put('/properties/{id}',[PropertyController::class,'update']);
     
-        Route::resource('/purchase',PurchaseController::class);
+        
     });
-
+    Route::resource('/purchase',PurchaseController::class);
     Route::middleware(['checkrole:kupac'])->group(function () {
         Route::resource('/rating',RatingController::class);
     });

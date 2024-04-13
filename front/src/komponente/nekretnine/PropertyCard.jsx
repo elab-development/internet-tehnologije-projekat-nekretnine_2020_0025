@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import './PropertyCard.css';
 import Modal from './Modal';  
+import ReservationModal from './ReservationModal'; // Pretpostavljamo da imate komponentu za modal rezervacije
 
 const PropertyCard = ({ property }) => {
-  const [showModal, setShowModal] = useState(false);  
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [showReservationModal, setShowReservationModal] = useState(false);
 
-  // Funkcija za otvaranje modala
-  const openModal = () => {
-    setShowModal(true);
+  // Funkcije za otvaranje i zatvaranje modala za galeriju slika
+  const openGalleryModal = () => {
+    setShowGalleryModal(true);
   };
 
-  // Funkcija za zatvaranje modala
-  const closeModal = () => {
-    setShowModal(false);
+  const closeGalleryModal = () => {
+    setShowGalleryModal(false);
+  };
+
+  // Funkcije za otvaranje i zatvaranje moda za rezervaciju
+  const openReservationModal = () => {
+    setShowReservationModal(true);
+  };
+
+  const closeReservationModal = () => {
+    setShowReservationModal(false);
   };
  
   return (
@@ -27,13 +37,16 @@ const PropertyCard = ({ property }) => {
         <p>Property Type: {property.propery_type.name}</p>
         {/* Proveravamo da li nekretnina ima slike */}
         {property.images.length > 0 && (
-          <button onClick={openModal}>Prikaži Galeriju</button>
+          <div>
+            <button onClick={openGalleryModal}>Prikaži Galeriju</button>
+          
+          </div>
         )}
       </div>
+      <button onClick={openReservationModal}>Rezerviši</button>
       {/* Modal komponenta za prikaz galerije slika */}
-      {showModal && (
-        <Modal onClose={closeModal}>
-        
+      {showGalleryModal && (
+        <Modal onClose={closeGalleryModal}>
           <h2>Galerija Slika</h2>
           <div className="image-gallery">
             {property.images.map((image, index) => (
@@ -41,6 +54,10 @@ const PropertyCard = ({ property }) => {
             ))}
           </div>
         </Modal>
+      )}
+      {/* Modal komponenta za rezervaciju */}
+      {showReservationModal && (
+        <ReservationModal onClose={closeReservationModal} property={property} />
       )}
     </div>
   );
