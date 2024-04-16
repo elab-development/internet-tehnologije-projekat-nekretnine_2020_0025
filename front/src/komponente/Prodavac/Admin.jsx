@@ -36,7 +36,7 @@ const Admin = () => {
   
   return (
     <div>
-      <div style={{ height: '400px', marginBottom: '20px' }}>
+      <div style={{ height: '400px', marginBottom: '20px',marginLeft:"20%",marginRight:"20%" }}>
         <h2>Statistics - Rentals</h2>
         {statistics && statistics.top_properties && statistics.top_properties.length > 0 ? (
           <Bar
@@ -67,13 +67,16 @@ const Admin = () => {
                 }
               }
             }}
-            height={400}
+            height={400} 
+           
           />
         ) : (
           <p>Loading...</p>
         )}
       </div>
-      <div style={{ height: '400px', marginBottom: '20px' }}>
+      <div style={{ height: '400px', marginBottom: '20px',marginLeft:"20%",marginRight:"20%" }}>
+        <br />
+        <br />
         <h2>Statistics - User Registrations</h2>
         {statistics && statistics.user_registrations && statistics.user_registrations.length > 0 ? (
           <Bar
@@ -105,6 +108,7 @@ const Admin = () => {
               }
             }}
             height={400}
+           
           />
         ) : (
           <p>Loading...</p>
