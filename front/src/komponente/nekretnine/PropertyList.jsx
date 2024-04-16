@@ -8,32 +8,33 @@ import Footer from '../Footer/Footer';
 import useNekretnine from '../customHooks/useNekretnine';
 
 const PropertyList = () => {
-  const { data: properties, setData: setProperties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
+  const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
-  const [filteredProperties, setFilteredProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const propertiesPerPage = 3;
 
-  const applyFilters = (search, type, min, max) => {
-    const filtered = properties.filter(property => {
-      return (
-        (search === '' || property.description.toLowerCase().includes(search.toLowerCase()) || property.title.toLowerCase().includes(search.toLowerCase())) &&
-        (type === '' || property.propery_type.name === type) && //slovna greska je ovde bila, iz apija vracamo slucajno propery umesto property type
-        (min === '' || parseInt(property.price) >= parseInt(min)) &&
-        (max === '' || parseInt(property.price) <= parseInt(max))
-      );
-    });
+  const applyFilters = (property) => {
+    const searchTermLowerCase = searchTerm.toLowerCase();
+    const titleLowerCase = property.title.toLowerCase();
+    const descriptionLowerCase = property.description.toLowerCase();
 
-    setFilteredProperties(filtered);
+    const matchesSearch = titleLowerCase.includes(searchTermLowerCase) || descriptionLowerCase.includes(searchTermLowerCase);
+    const matchesType = selectedPropertyType === '' || property.propery_type.name === selectedPropertyType;
+    const matchesPriceRange = (minPrice === '' || parseInt(property.price) >= parseInt(minPrice)) &&
+      (maxPrice === '' || parseInt(property.price) <= parseInt(maxPrice));
+
+    return matchesSearch && matchesType && matchesPriceRange;
   };
 
+  const filteredProperties = properties.filter(applyFilters);
+
   useEffect(() => {
-    applyFilters(searchTerm, selectedPropertyType, minPrice, maxPrice);
-  }, [properties, searchTerm, selectedPropertyType, minPrice, maxPrice]);
+    setCurrentPage(0); 
+  }, [searchTerm, selectedPropertyType, minPrice, maxPrice]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -58,9 +59,9 @@ const PropertyList = () => {
   const pageCount = Math.ceil(filteredProperties.length / propertiesPerPage);
   const offset = currentPage * propertiesPerPage;
   const currentProperties = filteredProperties.slice(offset, offset + propertiesPerPage);
- console.log(filteredProperties[0])
+
   return (
-    <> 
+    <>
       <div className="property-list">
         <div className="search-container">
           <input
@@ -113,8 +114,8 @@ const PropertyList = () => {
             ))}
           </>
         )}
-      </div> 
-      <Footer></Footer>
+      </div>
+      <Footer />
     </>
   );
 };

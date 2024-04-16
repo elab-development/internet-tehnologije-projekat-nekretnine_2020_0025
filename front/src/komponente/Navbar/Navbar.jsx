@@ -32,6 +32,12 @@ const Navbar = ({ token, setToken }) => {
               <Link to="/property-list">Property List</Link>
             </li>
             <li>
+              <Link to="/adminpanel">Property List</Link>
+            </li>
+            <li>
+              <Link to="/adminpanel">Property List</Link>
+            </li>
+            <li>
               <Link to="/contact">Contact</Link>
             </li>
             <li>

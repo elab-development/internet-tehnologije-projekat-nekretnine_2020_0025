@@ -23,9 +23,10 @@ const ReservationModal = ({ onClose, property }) => {
   useEffect(() => {
     if (property.price && numberOfDays) {
       const price = property.price * numberOfDays;
+      console.log(price)
       setTotalPrice(price);
     }
-  }, [property.price, numberOfDays]);
+  }, [property.price, numberOfDays]); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

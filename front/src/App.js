@@ -10,6 +10,7 @@ import Login from './komponente/login/Login';
 import Navbar from './komponente/Navbar/Navbar';
 import Register from './komponente/login/Register';
 import PropertyManagement from './komponente/Prodavac/PropertyManagement';
+import Admin from './komponente/Prodavac/Admin';
 function App() {
   const [messages, setMessages] = useState([]);
   const [token, setToken] = useState(null);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register  />} />  {/*dodato   */}
    
         <Route path="/login" element={<Login setToken={setToken} />} />  {/*dodato   */}
+        <Route path="/adminpanel" element={<Admin />} />{/*dodato   */}
         <Route path="/property-management" element={<PropertyManagement />} />{/*dodato   */}
 
 
