@@ -1,21 +1,27 @@
+// PropertyList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PropertyList.css';
 import PropertyCard from './PropertyCard';
 import ReactPaginate from 'react-paginate';
-import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import useNekretnine from '../customHooks/useNekretnine';
 
 const PropertyList = () => {
   const { data: properties, isLoading, error } = useNekretnine('http://127.0.0.1:8000/api/properties');
-
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const propertiesPerPage = 3;
+  const [selectedCurrency, setSelectedCurrency] = useState('USD'); // Dodali smo state za odabranu valutu
+
+  const currencies = ['USD', 'EUR', 'RSD']; // Lista podržanih valuta
+
+  const handleCurrencyChange = (e) => {
+    setSelectedCurrency(e.target.value);
+  };
 
   const applyFilters = (property) => {
     const searchTermLowerCase = searchTerm.toLowerCase();
@@ -93,6 +99,11 @@ const PropertyList = () => {
             value={maxPrice}
             onChange={handleMaxPriceChange}
           />
+          <select value={selectedCurrency} onChange={handleCurrencyChange}>  
+            {currencies.map(currency => (
+              <option key={currency} value={currency}>{currency}</option>
+            ))}
+          </select>
         </div>
         {isLoading ? (
           <div>Loading...</div>
@@ -110,7 +121,7 @@ const PropertyList = () => {
               activeClassName={'active'}
             />
             {currentProperties.map((property) => (
-              <PropertyCard key={property.id} property={property}></PropertyCard>
+              <PropertyCard key={property.id} property={property} selectedCurrency={selectedCurrency} />  
             ))}
           </>
         )}

@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './PropertyCard.css';
 import Modal from './Modal';  
-import ReservationModal from './ReservationModal'; // Pretpostavljamo da imate komponentu za modal rezervacije
+import ReservationModal from './ReservationModal'; 
 
-const PropertyCard = ({ property }) => {
+const PropertyCard = ({ property, selectedCurrency }) => {
   const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [exchangeRates, setExchangeRates] = useState(null); // Stanje za čuvanje koeficijenata konverzije
 
-  // Funkcije za otvaranje i zatvaranje modala za galeriju slika
+  useEffect(() => {
+    const fetchExchangeRates = async () => {
+      try {
+        const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD'); // USD kao osnovna valuta
+        setExchangeRates(response.data.rates); // Čuvamo koeficijente konverzije u stanju
+      } catch (error) {
+        console.error('Error fetching exchange rates:', error);
+      }
+    };
+
+    fetchExchangeRates(); // Pozivamo funkciju za dohvatanje koeficijenata konverzije kada se komponenta mount-uje
+  }, []);
+
   const openGalleryModal = () => {
     setShowGalleryModal(true);
   };
@@ -16,7 +30,6 @@ const PropertyCard = ({ property }) => {
     setShowGalleryModal(false);
   };
 
-  // Funkcije za otvaranje i zatvaranje moda za rezervaciju
   const openReservationModal = () => {
     setShowReservationModal(true);
   };
@@ -25,6 +38,15 @@ const PropertyCard = ({ property }) => {
     setShowReservationModal(false);
   };
  
+  const convertPrice = () => {
+    // Konvertujemo cenu u odabranu valutu ako su koeficijenti dostupni
+    if (exchangeRates && property.price && exchangeRates[selectedCurrency]) {
+      const convertedPrice = parseFloat(property.price) * exchangeRates[selectedCurrency];
+      return convertedPrice.toFixed(2); // Zaokružujemo na dve decimale
+    }
+    return property.price; // Ako koeficijenti nisu dostupni, vraćamo originalnu cenu
+  };
+
   return (
     <div className="property-card">
       <div className="property-header">
@@ -32,30 +54,26 @@ const PropertyCard = ({ property }) => {
       </div>
       <div className="property-content">
         <p>Description: {property.description}</p>
-        <p>Price: {property.price}</p>
+        <p>Price: {convertPrice()} {selectedCurrency}</p>
         <p>Bedrooms: {property.bedrooms}</p>
         <p>Property Type: {property.propery_type.name}</p>
-        {/* Proveravamo da li nekretnina ima slike */}
         {property.images.length > 0 && (
           <div>
-            <button onClick={openGalleryModal}>Prikaži Galeriju</button>
-          
+            <button onClick={openGalleryModal}>Show Gallery</button>
           </div>
         )}
       </div>
-      <button onClick={openReservationModal}>Rezerviši</button>
-      {/* Modal komponenta za prikaz galerije slika */}
+      <button onClick={openReservationModal}>Book</button>
       {showGalleryModal && (
         <Modal onClose={closeGalleryModal}>
-          <h2>Galerija Slika</h2>
+          <h2>Image Gallery</h2>
           <div className="image-gallery">
             {property.images.map((image, index) => (
-              <img key={index} src={image} alt={`Slika ${index + 1}`} />
+              <img key={index} src={image} alt={`Image ${index + 1}`} />
             ))}
           </div>
         </Modal>
       )}
-      {/* Modal komponenta za rezervaciju */}
       {showReservationModal && (
         <ReservationModal onClose={closeReservationModal} property={property} />
       )}
