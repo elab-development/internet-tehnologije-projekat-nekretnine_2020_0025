@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-// Register the components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -41,45 +32,84 @@ const Admin = () => {
     };
   
     fetchStatistics();
-  }, []); // Prazan niz zavisnosti kako bi se efekat izvršio samo jednom
-  
+  }, []); 
   
   return (
-    <div style={{ height: '400px' }}>  // Postavljena je fiksna visina za div
-      <h2>Statistics</h2>
-      {statistics && statistics.length > 0 ? (
-        <Bar
-          data={{
-            labels: statistics.map(property => property.title),
-            datasets: [{
-              label: 'Number of Rentals',
-              data: statistics.map(property => property.reservations_count),
-              backgroundColor: 'rgba(75,192,192,0.2)',
-              borderColor: 'rgba(75,192,192,1)',
-              borderWidth: 1
-            }]
-          }}
-          options={{
-            maintainAspectRatio: false,
-            responsive: true,
-            scales: {
-              x: {
-                type: 'category',
-                ticks: {
+    <div>
+      <div style={{ height: '400px', marginBottom: '20px' }}>
+        <h2>Statistics - Rentals</h2>
+        {statistics && statistics.top_properties && statistics.top_properties.length > 0 ? (
+          <Bar
+            key="rentals-bar-chart"
+            data={{
+              labels: statistics.top_properties.map(property => property.title),
+              datasets: [{
+                label: 'Number of Rentals',
+                data: statistics.top_properties.map(property => property.reservations_count),
+                backgroundColor: 'rgba(75,192,192,0.2)',
+                borderColor: 'rgba(75,192,192,1)',
+                borderWidth: 1
+              }]
+            }}
+            options={{
+              maintainAspectRatio: false,
+              responsive: true,
+              scales: {
+                x: {
+                  type: 'category',
+                  ticks: {
+                    beginAtZero: true
+                  }
+                },
+                y: {
+                  type: 'linear',
                   beginAtZero: true
                 }
-              },
-              y: {
-                type: 'linear',
-                beginAtZero: true
               }
-            }
-          }}
-          height={400}  // Eksplicitno definisana visina za grafikon
-        />
-      ) : (
-        <p>Loading...</p>
-      )}
+            }}
+            height={400}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
+      <div style={{ height: '400px', marginBottom: '20px' }}>
+        <h2>Statistics - User Registrations</h2>
+        {statistics && statistics.user_registrations && statistics.user_registrations.length > 0 ? (
+          <Bar
+            key="user-registrations-bar-chart"
+            data={{
+              labels: statistics.user_registrations.map(entry => `${entry.month}/${entry.year}`),
+              datasets: [{
+                label: 'New User Registrations',
+                data: statistics.user_registrations.map(entry => entry.registrations_count),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+              }]
+            }}
+            options={{
+              maintainAspectRatio: false,
+              responsive: true,
+              scales: {
+                x: {
+                  type: 'category',
+                  ticks: {
+                    beginAtZero: true
+                  }
+                },
+                y: {
+                  type: 'linear',
+                  beginAtZero: true
+                }
+              }
+            }}
+            height={400}
+          />
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
     </div>
   );
 };
