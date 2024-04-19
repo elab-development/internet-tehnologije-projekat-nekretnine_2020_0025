@@ -20,9 +20,9 @@ function App() {
       <Navbar token={token} setToken={setToken}></Navbar>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<Register  />} />  {/*dodato   */}
+        <Route path="/register" element={<Register  />} />  
    
-        <Route path="/login" element={<Login setToken={setToken} />} />  {/*dodato   */}
+        <Route path="/login" element={<Login setToken={setToken} />} /> 
         <Route path="/adminpanel" element={<Admin />} />{/*dodato   */}
         <Route path="/property-management" element={<PropertyManagement />} />{/*dodato   */}
 

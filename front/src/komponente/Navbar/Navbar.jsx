@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';  
 import './Navbar.css';
 
 const Navbar = ({ token, setToken }) => {
-  let navigate=useNavigate();
+  const [role, setRole] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+ 
+    if (token) {
+      const userRole = localStorage.getItem('role');  
+      setRole(userRole);  
+    }
+  }, [token]);
+
   const handleLogout = async () => {
     try {
       await axios.post('http://127.0.0.1:8000/api/logout', null, {
@@ -12,7 +22,7 @@ const Navbar = ({ token, setToken }) => {
           Authorization: `Bearer ${token}`  
         }
       });  
-      setToken(null);  
+      setToken(null);   
       navigate("/");
       localStorage.clear();
     } catch (error) {
@@ -26,19 +36,27 @@ const Navbar = ({ token, setToken }) => {
         <li>
           <Link to="/">Home</Link>
         </li>
-        {token ? (
+        {token && role == 'kupac' && (
           <>
             <li>
               <Link to="/property-list">Property List</Link>
             </li>
             <li>
-              <Link to="/adminpanel">Property List</Link>
-            </li>
-            <li>
-              <Link to="/adminpanel">Property List</Link>
-            </li>
-            <li>
               <Link to="/contact">Contact</Link>
+            </li>
+           
+            <li>
+              <button onClick={handleLogout}>Logout</button>  
+            </li>
+          </>
+        )}
+        {token && role === 'prodavac' && (
+          <>
+            <li>
+              <Link to="/adminpanel">Admin Panel</Link>
+            </li>
+            <li>
+              <Link to="/property-management">Property Management</Link>
             </li>
             <li>
               <Link to="/messages">Messages</Link>
@@ -47,7 +65,8 @@ const Navbar = ({ token, setToken }) => {
               <button onClick={handleLogout}>Logout</button>  
             </li>
           </>
-        ) : (
+        )}
+        {!token && (
           <>
             <li>
               <Link to="/login">Login</Link>

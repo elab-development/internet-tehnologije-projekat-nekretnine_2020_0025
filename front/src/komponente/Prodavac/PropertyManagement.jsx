@@ -96,8 +96,35 @@ const PropertyManagement = () => {
     };
   
     const updateProperty = async (id, propertyData) => {
-      // Implement update logic here
+      try {
+        const formData = new FormData();
+        for (let key in propertyData) {
+          if (key === 'images') {
+            for (let i = 0; i < propertyData.images.length; i++) {
+              formData.append('images[]', propertyData.images[i]);
+            }
+          } else {
+            formData.append(key, propertyData[key]);
+          }
+        }
+    
+        const response = await axios.put(`http://127.0.0.1:8000/api/properties/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
+        });
+    
+        const updatedPropertyIndex = properties.findIndex(property => property.id === id);
+        const updatedProperties = [...properties];
+        updatedProperties[updatedPropertyIndex] = response.data.nekretnina;
+        setProperties(updatedProperties);
+        setSelectedProperty(null); // Resetujemo selektovanu nekretninu nakon ažuriranja
+      } catch (error) {
+        console.error('Error updating property:', error);
+      }
     };
+    
   
     const handleEditProperty = (property) => {
       setSelectedProperty(property);
